@@ -115,12 +115,18 @@ export default (): void => {
       makeCodeView(ed);
       ed.on('preinit', () => {
         ed.schema.addCustomElements({
-          'tiny-math': {
-            extends: 'div',
-            attributes: [ 'formula' ]
+          'tiny-math-block': {
+            extends: 'div', // Means that it can be put at any place a div can be put
+            attributes: [ 'formula' ],
+            children: [ 'math' ]
+          },
+          'tiny-math-inline': {
+            extends: 'span', // Means that it can be ut at any place a span can be put
+            attributes: [ 'formula' ],
+            children: [ 'math' ]
           },
           'math': {
-            extends: 'div',
+            // Math is only allowed in these custom elements since this extends nothing then it can not be placed anywhere but specific child positions
             attributes: [ 'xmlns' ]
           }
         });
