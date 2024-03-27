@@ -113,6 +113,18 @@ export default (): void => {
       makeSidebar(ed, 'sidebar1', 'green', 200);
       makeSidebar(ed, 'sidebar2', 'green', 200);
       makeCodeView(ed);
+      ed.on('preinit', () => {
+        ed.schema.addCustomElements({
+          'tiny-math': {
+            extends: 'div',
+            attributes: [ 'formula' ]
+          },
+          'math': {
+            extends: 'div',
+            attributes: [ 'xmlns' ]
+          }
+        });
+      });
     },
     plugins: [
       'autosave', 'advlist', 'autolink', 'link', 'image', 'lists', 'charmap', 'preview', 'anchor', 'pagebreak',

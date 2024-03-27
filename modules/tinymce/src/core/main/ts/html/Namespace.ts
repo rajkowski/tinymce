@@ -1,4 +1,4 @@
-export type NamespaceType = 'html' | 'svg';
+export type NamespaceType = 'html' | 'svg' | 'math';
 
 export interface NamespaceTracker {
   readonly track: (node: Node) => NamespaceType;
@@ -6,13 +6,25 @@ export interface NamespaceTracker {
   readonly reset: () => void;
 }
 
-export const isNonHtmlElementRootName = (name: string): boolean => name.toLowerCase() === 'svg';
+const nodeNameToNamespaceType = (name: string) => {
+  const lowerCaseName = name.toLowerCase();
+
+  if (lowerCaseName === 'svg') {
+    return 'svg';
+  } else if (lowerCaseName === 'math') {
+    return 'math';
+  } else {
+    return 'html';
+  }
+};
+
+export const isNonHtmlElementRootName = (name: string): boolean => nodeNameToNamespaceType(name) !== 'html';
 
 export const isNonHtmlElementRoot = (node: Node): boolean => isNonHtmlElementRootName(node.nodeName);
 
-export const toScopeType = (node: Node | undefined): NamespaceType => node?.nodeName === 'svg' ? 'svg' : 'html';
+export const toScopeType = (node: Node | undefined): NamespaceType => nodeNameToNamespaceType(node?.nodeName ?? 'html');
 
-export const namespaceElements = [ 'svg' ];
+export const namespaceElements = [ 'svg', 'mathml' ];
 
 export const createNamespaceTracker = (): NamespaceTracker => {
   let scopes: Node[] = [];
